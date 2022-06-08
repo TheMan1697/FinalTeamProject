@@ -1,0 +1,22 @@
+package works.yermi.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import works.yermi.domain.ReservationVO;
+
+public interface ReservationMapper {
+	public List<ReservationVO> getList(); // 전체 예약 목록조회
+
+	public List<ReservationVO> getListByUserid(String userid); // 유저아이디로 예약 목록조회
+
+	public List<ReservationVO> getListByPensionid(String pensionid); // 펜션아이디로 예약 목록조회
+	
+	public List<ReservationVO> checkDate(@Param("checkin") String checkin, @Param("checkout") String checkout, @Param("roomNum") Long roomNum);
+	
+	public int insert(ReservationVO vo); // 예약등록
+	
+	public int delete(); // 예약취소
+	
+}

@@ -1,0 +1,56 @@
+package works.yermi.controller;
+
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import works.yermi.domain.ReplyVO;
+import works.yermi.service.ReplyService;
+
+@Controller
+@RequestMapping("reply/*") // 을 통해서 어느 컨트롤러가 요청을 처리할지 알게 된다.
+@Log4j
+@AllArgsConstructor
+public class ReplyController {
+	private ReplyService service;
+	
+	@GetMapping("list")
+	public String list(Model model, Long pensionid) {
+		model.addAttribute("replies", service.getList(pensionid));
+		return "/reply/list";
+	}
+	
+	@GetMapping("{pensionid}")
+	@ResponseBody // xml, .json 형태로 보기위한 어노테이션
+	public List<ReplyVO> getList(@PathVariable Long pensionid, Model model){ // model에 replyList를 추가하여 list를 return. 
+		                                                                       // 여기서 replyList를 return 한다는 것은 replyList.jsp의 화면을 보여주겠다는 의미.
+		List<ReplyVO> replyList = service.getList(pensionid);
+		model.addAttribute("replies", replyList);
+		
+		return service.getList(pensionid);
+	}
+	
+	@RequestMapping(value = "/getPensionid", method = RequestMethod.GET)
+	public String getPensionid (Model model, @RequestParam("pensionid") Long pensionid){
+		
+		model.addAttribute("pensionid", service.getList(pensionid));
+		model.addAttribute("replyVO", new ReplyVO());
+		
+		return "pension/pensionid";
+	}
+	
+	@RequestMapping(value = "/getList", method = RequestMethod.POST)
+	@ResponseBody // xml, .json 형태로 보기위한 어노테이션
+	public List<ReplyVO> getList(@PathVariable Long pensionid){ 
+		return service.getList(pensionid);
+	}
+}

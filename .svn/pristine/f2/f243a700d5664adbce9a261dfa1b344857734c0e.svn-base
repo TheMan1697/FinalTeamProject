@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="works.yermi.mapper.PensionMapper">
+ <sql id="sql">
+ 	<if test="pension.category == 1">
+		AND CATEGORY = 1
+	</if>
+	<if test="pension.category == 2">
+		AND CATEGORY = 2
+	</if>
+	<if test="pension.footVolleyballCourt == true">
+		AND FOOTVOLLEYBALLCOURT = 1
+	</if>
+	<if test="pension.karaoke == true">
+		AND KARAOKE = 1
+	</if>
+	<if test="pension.convenienceStore == true">
+		AND CONVENIENCESTORE = 1
+	</if>
+	<if test="pension.parkingLot == true">
+		AND PARKINGLOT = 1
+	</if>
+	<if test="pension.seminarRoom == true">
+		AND SEMINARROOM = 1
+	</if>
+	<if test="pension.bbq == true">
+		AND BBQ = 1
+	</if>
+	<if test="pension.restaurant == true">
+		AND RESTAURANT = 1
+	</if>
+	<if test="pension.wifi == true">
+		AND WIFI = 1
+	</if>
+	<if test="pension.tv == true">
+		AND TV = 1
+	</if>
+	<if test="pension.airConditioner == true">
+		AND AIRCONDITIONER = 1
+	</if>
+	<if test="pension.miniBar == true">
+		AND MINIBAR = 1
+	</if>
+	<if test="pension.bathTub == true">
+		AND BATHTUB = 1
+	</if>
+	<if test="pension.refrigerator == true">
+		AND REFRIGERATOR = 1
+	</if>
+	<if test="pension.pickup == true">
+		AND PICKUP = 1
+	</if>
+	<if test="pension.cooking == true">
+		AND COOKING = 1
+	</if>
+	<if test="pension.breakfast == true">
+		AND BREAKFAST = 1
+	</if>
+	<if test="pension.freeParking == true">
+		AND FREEPARKING = 1
+	</if>
+	<if test="pension.campfire == true">
+		AND CAMPFIRE = 1
+	</if>
+ </sql>
+ 	<select id="getList" resultType="pension">
+ 		SELECT * /*+ INDEX(TBL_PENSION IDX_PENSION) */
+ 		FROM TBL_PENSION
+ 		WHERE ENABLED = 1
+ 	</select>
+ 
+ 	<select id="getListTopten" resultType="pension">
+ 		SELECT * FROM ( 
+		    SELECT * FROM TBL_PENSION
+		    WHERE ENABLED = 1
+		    ORDER BY STARRATE DESC, REPLYCNT DESC
+		    )
+		WHERE ROWNUM &lt;= 10
+ 	</select>
+ 
+ 	<select id="getListWithPaging" resultType="pension">
+ 		SELECT * /*+ INDEX(TBL_PENSION_FILTER IDX_PENSION_FILTER) */
+		FROM TBL_PENSION_FILTER
+		WHERE ENABLED = 1
+		AND PENSIONID > #{cri.lastPensionid}
+		AND ROWNUM &lt; = #{cri.amount}
+ 	</select>
+ 	
+ 	<select id="read" resultType="pension">
+ 		SELECT *
+ 		FROM TBL_PENSION
+ 		WHERE PENSIONID = #{pensionid}
+ 	</select>
+ 	
+ 	
+ 	<insert id="insertSelectKey">
+ 	<selectKey keyProperty="pensionid" order="BEFORE" resultType="long">
+ 		SELECT SEQ_PENSION.NEXTVAL FROM DUAL
+ 	</selectKey>
+ 	INSERT INTO TBL_PENSION (
+ 		PENSIONID,
+ 	 	NAME, 
+ 	 	USERID, 
+ 	 	CATEGORY, 
+ 	 	ADDRESS, 
+ 	 	COMMENTS, 
+ 	 	ENABLED,
+ 	 	LONGITUDE,
+ 	 	LATITUDE,
+ 	 	PRICE,
+		STARRATE,
+		REPLYCNT,
+		DELSTATUS
+ 	)
+	VALUES(
+		#{pensionid}, 
+		#{name}, 
+		#{userid}, 
+		#{category}, 
+		#{address}, 
+		#{comments}, 
+		0,
+		#{longitude},
+		#{latitude},
+		0,
+		0,
+		0,
+		0
+	)
+ 	</insert>
+ 	
+ 	<insert id="insertPublic">
+ 	<selectKey keyProperty="pensionid" order="BEFORE" resultType="long">
+ 		SELECT SEQ_PENSION.CURRVAL FROM DUAL
+ 	</selectKey>
+ 	INSERT INTO TBL_PUBLIC_FACILITIES (
+ 		PENSIONID,
+ 		FOOTVOLLEYBALLCOURT, 
+ 		KARAOKE, 
+ 		CONVENIENCESTORE, 
+ 		PARKINGLOT,
+		SEMINARROOM,
+		BBQ,
+		RESTAURANT
+	)
+	VALUES (
+		#{pensionid},
+		#{footVolleyballCourt},
+		#{karaoke},
+		#{convenienceStore}, 
+ 		#{parkingLot},
+		#{seminarRoom},
+		#{bbq},
+		#{restaurant}
+	)
+ 	</insert>
+ 	
+ 	<insert id="insertInternal">
+ 	<selectKey keyProperty="pensionid" order="BEFORE" resultType="long">
+ 		SELECT SEQ_PENSION.CURRVAL FROM DUAL
+ 	</selectKey>
+ 		INSERT INTO TBL_INTERNAL_FACILITIES(
+ 			PENSIONID,
+ 			WIFI,
+			TV,
+			AIRCONDITIONER,
+			MINIBAR,
+			BATHTUB,
+			REFRIGERATOR
+ 		)
+ 		VALUES (
+ 			#{pensionid},
+ 			#{wifi},
+ 			#{tv},
+ 			#{airConditioner},
+ 			#{miniBar},
+ 			#{bathTub},
+ 			#{refrigerator}
+ 		)
+ 	</insert>
+ 	
+ 	<insert id="insertOther">
+ 	<selectKey keyProperty="pensionid" order="BEFORE" resultType="long">
+ 		SELECT SEQ_PENSION.CURRVAL FROM DUAL
+ 	</selectKey>
+ 		INSERT INTO TBL_OTHER (
+ 			PENSIONID,
+ 			PICKUP,
+			COOKING,
+			BREAKFAST,
+			FREEPARKING,
+			CAMPFIRE
+ 		)
+ 		VALUES (
+ 			#{pensionid},
+ 			#{pickup},
+ 			#{cooking},
+ 			#{breakfast},
+ 			#{freeParking},
+ 			#{campfire}
+ 		)	
+ 	</insert>
+ 	
+	<insert id="insertpensionfilter">
+ 	<selectKey keyProperty="pensionid" order="BEFORE" resultType="long">
+ 		SELECT SEQ_PENSION.CURRVAL FROM DUAL
+ 	</selectKey>
+ 		INSERT INTO TBL_PENSION_FILTER(
+ 			PENSIONID, 
+ 			NAME, 
+ 			USERID,
+ 			CATEGORY, 
+ 			ADDRESS, 
+ 			COMMENTS,
+ 			FOOTVOLLEYBALLCOURT, 
+	 		KARAOKE, 
+	 		CONVENIENCESTORE, 
+	 		PARKINGLOT,
+			SEMINARROOM,
+			BBQ,
+			RESTAURANT,
+			WIFI,
+			TV,
+			AIRCONDITIONER,
+			MINIBAR,
+			BATHTUB,
+			REFRIGERATOR,
+			PICKUP,
+			COOKING,
+			BREAKFAST,
+			FREEPARKING,
+			CAMPFIRE,
+			ENABLED,
+			LONGITUDE,
+ 	 		LATITUDE,
+ 	 		PRICE,
+			STARRATE,
+			REPLYCNT,
+			DELSTATUS
+ 		)
+ 		VALUES (
+ 			#{pensionid},
+ 			#{name}, 
+ 			#{userid},
+ 			#{category}, 
+ 			#{address}, 
+ 			#{comments},
+ 			#{footVolleyballCourt},
+			#{karaoke},
+			#{convenienceStore}, 
+	 		#{parkingLot},
+			#{seminarRoom},
+			#{bbq},
+			#{restaurant},
+ 			#{wifi},
+ 			#{tv},
+ 			#{airConditioner},
+ 			#{miniBar},
+ 			#{bathTub},
+ 			#{refrigerator},
+ 			#{pickup},
+ 			#{cooking},
+ 			#{breakfast},
+ 			#{freeParking},
+ 			#{campfire},
+ 			0,
+ 			#{longitude},
+			#{latitude},
+			0,
+			0,
+			0,
+			0
+ 		)
+ 	</insert>
+ 	
+ 	<insert id="insert">
+ 	INSERT INTO TBL_PENSION (PENSIONID, NAME, USERID, CATEGORY, ENABLED)
+	VALUES(#{pensionid}, #{name}, #{userid}, #{category}, #{enabled})
+	</insert>
+ 	
+ 	<update id="update">
+ 		UPDATE TBL_PENSION_FILTER SET
+ 		NAME = #{name},
+		USERID = #{userid},
+		CATEGORY = #{category},
+		ENABLED = #{enabled},
+		FOOTVOLLEYBALLCOURT = #{footVolleyballCourt},
+		KARAOKE = #{karaoke},
+		CONVENIENCESTORE = #{convenienceStore},
+		PARKINGLOT = #{parkingLot},
+		SEMINARROOM = #{seminarRoom},
+		BBQ = #{bbq},
+		RESTAURANT = #{restaurant},
+		WIFI = #{wifi},
+		TV = #{tv},
+		AIRCONDITIONER = #{airConditioner},
+		MINIBAR = #{miniBar},
+		BATHTUB = #{bathTub},
+		REFRIGERATOR = #{refrigerator},
+		PICKUP = #{pickup},
+		COOKING = #{cooking},
+		BREAKFAST = #{breakfast},
+		FREEPARKING = #{freeParking},
+		CAMPFIRE = #{campfire}
+ 		WHERE PENSIONID = #{pensionid}
+ 	</update>
+ 	
+ 	<update id="delete">
+ 		UPDATE TBL_PENSION SET
+ 			ENABLED = 0,
+ 			DELSTATUS = 1
+ 		WHERE PENSIONID = #{pensionid}
+ 	</update>
+ 	
+ 	<select id="getListWithFilter" resultType="pension">
+ 		SELECT * /*+ INDEX(TBL_PENSION_FILTER IDX_PENSION_FILTER) */
+		FROM TBL_PENSION_FILTER
+		WHERE ENABLED = 1  
+		AND PENSIONID > #{cri.lastPensionid}
+		AND ROWNUM &lt; = #{cri.amount}
+		<include refid="sql" />
+		ORDER BY PENSIONID
+ 	</select>
+ </mapper> 

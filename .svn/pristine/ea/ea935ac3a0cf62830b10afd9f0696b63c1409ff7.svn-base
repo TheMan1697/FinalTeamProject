@@ -1,0 +1,245 @@
+package works.yermi.controller;
+
+import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Arrays;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.zaxxer.hikari.HikariConfig;
+
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
+import works.yermi.config.RootConfig;
+import works.yermi.config.SecurityConfig;
+import works.yermi.config.ServletConfig;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes={RootConfig.class, SecurityConfig.class, ServletConfig.class})
+@WebAppConfiguration
+@Log4j
+@EnableWebSecurity
+public class AdminControllerTests {
+	@Autowired @Setter
+	private WebApplicationContext ctx;
+	private MockMvc mvc;
+	
+	@Autowired @Setter
+	private HikariConfig hikariConfig; 
+	
+	@Before
+	public void setup() {
+		mvc = MockMvcBuilders.webAppContextSetup(ctx).build();
+		
+		
+	}
+
+	@Test
+	public void testExists() {
+		assertNotNull(ctx);
+		assertNotNull(mvc);
+		log.info(ctx);
+		log.info(mvc);
+	}
+	
+	@Test
+	public void testmemberList() throws Exception {
+//		SecurityContext ctx = SecurityContextHolder.createEmptyContext();
+//		SecurityContextHolder.setContext(ctx);
+//		ctx.setAuthentication(new UsernamePasswordAuthenticationToken("admin1", "", Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"), new SimpleGrantedAuthority("ROLE_MANAGER"), new SimpleGrantedAuthority("ROLE_ADMIN"))));
+		
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.get("/admin/memberList")
+					.param("pageNum", "1").param("amount", "10")
+					.param("total", "20").param("cri", "10")
+					)
+				.andReturn()
+				.getModelAndView();
+		log.info("mav :: " + mav);
+		log.info("mav.getModel() ::" +mav.getModel());
+		log.info("mav.getView() ::" + mav.getView());
+		log.info("mav.getViewName() ::" + mav.getViewName());
+	}
+
+	@Test
+	public void testmemberListModify() throws Exception {
+//		SecurityContext ctx = SecurityContextHolder.createEmptyContext();
+//		SecurityContextHolder.setContext(ctx);
+//		ctx.setAuthentication(new UsernamePasswordAuthenticationToken("admin1", "", Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"), new SimpleGrantedAuthority("ROLE_MANAGER"), new SimpleGrantedAuthority("ROLE_ADMIN"))));
+		
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.get("/admin/memberList")
+				.param("pw", "1234").param("email", "test@test.com")
+				.param("phone", "010").param("phone2", "1234").param("phone3", "5678")
+				.param("point", "1000").param("roadAddr", "서울특별시 영등포구 영중로8길 6").param("addrDetail", "휴먼교육센터")
+				.param("zipNo", "07302").param("jibunAddr", "서울특별시 영등포구 영등포동3가 8-1").param("name", "홍길동")
+				.param("nickName", "홍길동님").param("userId", "admin1")
+				)
+				.andExpect(status().is2xxSuccessful())
+				.andReturn()
+				.getModelAndView();
+		log.info("mav :: " + mav);
+		log.info("mav.getModel() ::" +mav.getModel());
+		log.info("mav.getView() ::" + mav.getView());
+		log.info("mav.getViewName() ::" + mav.getViewName());
+	}
+	
+	@Test
+	public void testlistTotalCountQna() throws Exception {
+//		SecurityContext ctx = SecurityContextHolder.createEmptyContext();
+//		SecurityContextHolder.setContext(ctx);
+//		ctx.setAuthentication(new UsernamePasswordAuthenticationToken("admin1", "", Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"), new SimpleGrantedAuthority("ROLE_MANAGER"), new SimpleGrantedAuthority("ROLE_ADMIN"))));
+		
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.get("/admin/listInquiry"))
+//				.param("pageNum", "1").param("amount", "10")
+//				.param("total", "20").param("cri", "10")
+//				)
+				.andExpect(status().is2xxSuccessful())
+				.andReturn()
+				.getModelAndView();
+		log.info("mav :: " + mav);
+		log.info("mav.getModel() ::" +mav.getModel());
+		log.info("mav.getView() ::" + mav.getView());
+		log.info("mav.getViewName() ::" + mav.getViewName());
+	}
+	
+	@Test
+	public void testQnaRegister() throws Exception {
+//		SecurityContext ctx = SecurityContextHolder.createEmptyContext();
+//		SecurityContextHolder.setContext(ctx);
+//		ctx.setAuthentication(new UsernamePasswordAuthenticationToken("admin1", "", Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"), new SimpleGrantedAuthority("ROLE_MANAGER"), new SimpleGrantedAuthority("ROLE_ADMIN"))));
+		
+		ModelAndView mav = mvc.perform(MockMvcRequestBuilders.get("/admin/listInquiry")
+				.param("pageNum", "1").param("amount", "10")
+				.param("total", "20").param("cri", "10")
+				.param("bno", "1").param("groupno", "10")
+				.param("title", "테스트제목").param("content", "테스트내용")
+				.param("writer", "작성자")
+				)
+				.andExpect(status().is2xxSuccessful())
+				.andReturn()
+				.getModelAndView();
+		log.info("mav :: " + mav);
+		log.info("mav.getModel() ::" +mav.getModel());
+		log.info("mav.getView() ::" + mav.getView());
+		log.info("mav.getViewName() ::" + mav.getViewName());
+	}
+	
+	@Test
+	public void testPensionList() throws Exception {
+		SecurityContext ctx = SecurityContextHolder.createEmptyContext();
+		SecurityContextHolder.setContext(ctx);
+		ctx.setAuthentication(new UsernamePasswordAuthenticationToken(
+				"admin1", "1234", 
+				Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"), 
+						new SimpleGrantedAuthority("ROLE_MANAGER"), 
+						new SimpleGrantedAuthority("ROLE_ADMIN")))
+				);
+		
+		mvc.perform(MockMvcRequestBuilders.get("/admin/listpension"))
+		.andReturn()
+		.getModelAndView();
+	}
+	
+	@Test
+	public void pensionregister() throws Exception {
+		SecurityContext ctx = SecurityContextHolder.createEmptyContext();
+		SecurityContextHolder.setContext(ctx);
+		ctx.setAuthentication(new UsernamePasswordAuthenticationToken(
+				"admin1", "1234", 
+				Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"), 
+						new SimpleGrantedAuthority("ROLE_MANAGER"), 
+						new SimpleGrantedAuthority("ROLE_ADMIN")))
+				);
+		
+		mvc.perform(MockMvcRequestBuilders.post("/admin/pensionregister")
+				.param("pensionid", "99999")
+				.param("name", "test pension")
+				.param("address", "송지면")
+				.param("userid", "admin1")
+				.param("category", "1")
+				.param("latitude", "1.5")
+				.param("longitude", "1.5")
+				.param("airConditioner", "true")
+				.param("breakfast", "true")
+				.param("campfire", "true"))
+		.andReturn()
+		.getModelAndView();
+	}
+	
+	@Test
+	public void testPensionListWithAd() throws Exception {
+		SecurityContext ctx = SecurityContextHolder.createEmptyContext();
+		SecurityContextHolder.setContext(ctx);
+		ctx.setAuthentication(new UsernamePasswordAuthenticationToken(
+				"admin1", "", 
+				Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"), 
+						new SimpleGrantedAuthority("ROLE_MANAGER"), 
+						new SimpleGrantedAuthority("ROLE_ADMIN")))
+				);
+		mvc.perform(MockMvcRequestBuilders.get("/admin/pensionListWithAd"))
+		.andReturn()
+		.getModelAndView();
+	}
+	
+	@Test
+	public void testPensionAdStatus() throws Exception {
+		SecurityContext ctx = SecurityContextHolder.createEmptyContext();
+		SecurityContextHolder.setContext(ctx);
+		ctx.setAuthentication(new UsernamePasswordAuthenticationToken(
+				"admin1", "", 
+				Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"), 
+						new SimpleGrantedAuthority("ROLE_MANAGER"), 
+						new SimpleGrantedAuthority("ROLE_ADMIN")))
+				);
+		mvc.perform(MockMvcRequestBuilders.get("/admin/pensionAdStatus"))
+		.andReturn()
+		.getModelAndView();
+	}
+	
+	@Test
+	public void testPensionModify() throws Exception {
+		SecurityContext ctx = SecurityContextHolder.createEmptyContext();
+		SecurityContextHolder.setContext(ctx);
+		ctx.setAuthentication(new UsernamePasswordAuthenticationToken(
+				"user34", "1234", 
+				Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"), 
+						new SimpleGrantedAuthority("ROLE_MANAGER")))
+				);
+		mvc.perform(MockMvcRequestBuilders.post("/admin/pensionmodify")
+		.param("pensionid", "70757")
+		.param("comments", "test"))
+		.andReturn()
+		.getModelAndView();
+	}
+	
+	@Test
+	public void testPensionRemove() throws Exception {
+		SecurityContext ctx = SecurityContextHolder.createEmptyContext();
+		SecurityContextHolder.setContext(ctx);
+		ctx.setAuthentication(new UsernamePasswordAuthenticationToken(
+				"user34", "1234", 
+				Arrays.asList(new SimpleGrantedAuthority("ROLE_MEMBER"), 
+						new SimpleGrantedAuthority("ROLE_MANAGER")))
+				);
+		mvc.perform(MockMvcRequestBuilders.post("/admin/pensionremove"))
+				.andReturn()
+				.getModelAndView();
+	}
+	
+}

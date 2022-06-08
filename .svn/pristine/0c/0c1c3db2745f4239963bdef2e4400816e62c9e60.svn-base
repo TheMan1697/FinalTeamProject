@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="works.yermi.mapper.MemberMapper">
+  	
+  	<select id="read" resultType="member" resultMap="memberMap">
+	    SELECT * 
+	    FROM TBL_MEMBER
+		JOIN TBL_AUTH
+		USING(USERID)
+		WHERE USERID = #{userId}
+  	</select>
+  	
+  	<select id="hasMember" resultType="member">
+	    SELECT * 
+	    FROM TBL_MEMBER 
+	    <choose>
+	    	<when test ="userId != null">
+	   		WHERE USERID = #{userId}	
+	    	</when>
+	    	<when test ="nickName != null">
+	   		WHERE NICKNAME = #{nickName}	
+	    	</when>
+	    	<when test ="email != null">
+	   		WHERE EMAIL = #{email}	
+	    	</when>
+	    </choose>
+  	</select>
+  	
+  	<select id="readList" resultMap="memberMap">
+  		SELECT * FROM TBL_MEMBER
+  	</select>
+  	
+  	<insert id="insertMember">
+  		INSERT INTO TBL_MEMBER (USERID, PW, EMAIL, PNUMBER, EMD, ROADADDR, ADDRDETAIL, ZIPNO, ROADFULLADDR, JIBUNADDR, SI, NAME , NICKNAME) 
+		VALUES (#{userId}, #{pw}, #{email}, #{phone}, #{emd}, #{roadAddr}, #{addrDetail}, #{zipNo}, #{roadFullAddr}, #{jibunAddr}, #{si}, #{name}, #{nickName})
+  	</insert>
+  	
+  	<!-- <insert id="insertMember">
+  		INSERT INTO TBL_MEMBER (USERID, PW, NAME, NICKNAME)
+  		VALUES (#{userId}, #{pw}, #{name}, #{nickName})
+  	</insert> -->
+  	
+  	<insert id="insertAuth">
+		INSERT INTO TBL_AUTH (AUTH,USERID) 
+		VALUES (#{auth}, #{userId})
+  	</insert>
+  	
+  	<update id="updateMember">
+  		UPDATE TBL_MEMBER SET 
+  		PW = #{pw}, 
+  		EMAIL = #{email}, 
+  		PNUMBER= #{phone},
+  		POINT = #{point},
+  		EMD = #{emd}, 
+  		ROADADDR= #{roadAddr}, 
+  		ADDRDETAIL= #{addrDetail}, 
+  		ZIPNO = #{zipNo}, 
+  		ROADFULLADDR = #{roadFullAddr}, 
+  		JIBUNADDR = #{jibunAddr}, 
+  		SI = #{si}, 
+  		NAME = #{name}  ,
+  		NICKNAME = #{nickName}  
+  		WHERE USERID = #{userId}
+  	</update>
+  	<update id="updateAuth">
+  		UPDATE TBL_AUTH SET 
+  		AUTH = #{auth} 
+  		WHERE USERID = #{userId}
+  	</update>
+  	
+  	<delete id="deleteMember">
+  		DELETE TBL_MEMBER WHERE USERID = #{userId}
+  	</delete>
+  	<delete id="deleteAuth">
+  		DELETE TBL_AUTH WHERE USERID = #{userId}
+  	</delete>
+
+  	<resultMap type="member" id="memberMap">
+  		<id property="userId" column="userid"/>
+  		<result property="userId" column="userid"/>
+  		<result property="pw" column="pw"/>
+  		<result property="email" column="email"/>
+  		<result property="phone" column="pnumber"/>
+
+  		<result property="regDate" column="regdate"/>
+  		<result property="updateDate" column="updatedate"/>
+  		<result property="enabled" column="enabled"/>
+  		<result property="point" column="point"/>
+  		
+  		<result property="emd" column="emd"/>
+  		<result property="roadAddr" column="roadaddr"/>
+  		<result property="addrDetail" column="addrdetail"/>
+  		<result property="zipNo" column="zipno"/>
+  		<result property="roadFullAddr" column="roadfulladdr"/>
+  		<result property="jibunAddr" column="jibunaddr"/>
+  		<result property="si" column="si"/>
+  		<result property="name" column="name"/>
+  		<result property="birthDate" column="birthdate"/>
+  		<result property="nickName" column="nickname"/>
+  		
+  		<collection property="auths" resultMap="authMap" />
+  	</resultMap>
+  	
+  	<resultMap type="auth" id="authMap" >
+  		<result property="userId" column="userid"/>
+  		<result property="auth" column="auth"/>
+  	</resultMap>
+  </mapper>

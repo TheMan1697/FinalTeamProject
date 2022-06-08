@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="works.yermi.mapper.RoomMapper">
+ 	<select id="getList" resultType="room">
+ 		SELECT * 
+		FROM TBL_ROOM WHERE PENSIONID = #{pensionid}
+		
+ 	</select>
+ 	
+ 	<select id="read" resultType="room">
+ 		SELECT *
+ 		FROM TBL_ROOM
+ 		WHERE ROOMNUM = #{roomNum}
+ 	</select>
+ 	
+ 	<insert id="insert">
+ 	INSERT INTO TBL_ROOM (PENSIONID, ROOMNUM, STARTTIME, DEADLINE, RESERVATIONSTATUS,PRICE,ENABLED,ROOMNAME)
+	VALUES(#{pensionid}, #{roomNum}, #{startTime}, #{deadline}, #{reservationStatus}, #{price},#{enabled},#{roomName})
+	</insert>
+	
+	<update id="update">
+ 		UPDATE TBL_ROOM SET
+ 		PENSIONID = #{pensionid},
+		STARTTIME = #{startTime},
+		DEADLINE = #{deadline},
+		RESERVATIONSTATUS = #{reservationStatus},
+		PRICE = #{price},
+		ENABLED = #{enabled},
+		ROOMNAME = #{roomName}
+ 		WHERE ROOMNUM = #{roomNum}
+ 	</update>
+ 	
+ 	<delete id="delete">
+ 		DELETE TBL_ROOM
+ 		WHERE ROOMNUM = #{roomNum}
+ 	</delete>
+ 
+ </mapper> 

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="works.yermi.mapper.PensionMapper">
+ 	<select id="getListWithPaging" resultType="pension">
+ 		SELECT * 
+		FROM TBL_PENSION_FILTER
+		WHERE PENSIONID > #{cri.lastPensionid}
+		AND ROWNUM &lt; = #{cri.amount}
+ 	</select>
+ 	
+ 	
+ 	
+ 	<select id="read" resultType="pension">
+ 		SELECT *
+ 		FROM TBL_PENSION_FILTER
+ 		WHERE PENSIONID = #{pensionid}
+ 	</select>
+ 	
+ 	<insert id="insert">
+ 	INSERT INTO TBL_PENSION (PENSIONID, NAME, USERID, CATEGORY, ENABLED)
+	VALUES(#{pensionid}, #{name}, #{userid}, #{category}, #{enabled})
+	</insert>
+	
+	<insert id="insertpensionfilter">
+ 	INSERT INTO TBL_PENSION_FILTER (
+ 		PENSIONID,
+		NAME,
+		USERID,
+		CATEGORY,
+		ENABLED,
+		ADDRESS,
+		FOOTVOLLEYBALLCOURT,
+		KARAOKE,
+		CONVENIENCESTORE,
+		PARKINGLOT,
+		SEMINARROOM,
+		BBQ,
+		RESTAURANT,
+		WIFI,
+		TV,
+		AIRCONDITIONER,
+		MINIBAR,
+		BATHTUB,
+		REFRIGERATOR,
+		PICKUP,
+		COOKING,
+		BREAKFAST,
+		FREEPARKING,
+		CAMPFIRE
+ 	)
+	VALUES(
+		#{pensionid},
+		#{name},
+		#{userid},
+		#{category},
+		#{enabled},
+		#{address},
+		#{footVolleyballCourt},
+		#{karaoke},
+		#{convenienceStore},
+		#{parkingLot},
+		#{seminarRoom},
+		#{bbq},
+		#{restaurant},
+		#{wifi},
+		#{tv},
+		#{airConditioner},
+		#{miniBar},
+		#{bathTub},
+		#{refrigerator},
+		#{pickup},
+		#{cooking},
+		#{breakfast},
+		#{freeParking},
+		#{campfire}
+	)
+ 	</insert>
+ 	
+ 	<update id="update">
+ 		UPDATE TBL_PENSION_FILTER SET
+ 		NAME = #{name},
+		USERID = #{userid},
+		CATEGORY = #{category},
+		ENABLED = #{enabled},
+		FOOTVOLLEYBALLCOURT = #{footVolleyballCourt},
+		KARAOKE = #{karaoke},
+		CONVENIENCESTORE = #{convenienceStore},
+		PARKINGLOT = #{parkingLot},
+		SEMINARROOM = #{seminarRoom},
+		BBQ = #{bbq},
+		RESTAURANT = #{restaurant},
+		WIFI = #{wifi},
+		TV = #{tv},
+		AIRCONDITIONER = #{airConditioner},
+		MINIBAR = #{miniBar},
+		BATHTUB = #{bathTub},
+		REFRIGERATOR = #{refrigerator},
+		PICKUP = #{pickup},
+		COOKING = #{cooking},
+		BREAKFAST = #{breakfast},
+		FREEPARKING = #{freeParking},
+		CAMPFIRE = #{campfire}
+ 		WHERE PENSIONID = #{pensionid}
+ 	</update>
+ 	
+ 	<delete id="delete">
+ 		DELETE TBL_PENSION_FILTER
+ 		WHERE PENSIONID = #{pensionid}
+ 	</delete>
+ 	
+ </mapper> 

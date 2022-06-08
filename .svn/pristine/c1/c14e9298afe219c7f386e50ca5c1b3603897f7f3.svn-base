@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="works.yermi.mapper.ReservationMapper">
+ 	<select id="getList" resultType="reservation">
+ 		SELECT * FROM TBL_RESERVATION
+ 	</select>
+ 	
+ 	<select id="getListByUserid" resultType="reservation">
+ 		SELECT * FROM TBL_RESERVATION WHERE USERID = #{userid}
+ 	</select>
+ 	
+ 	<select id="getListByPensionid" resultType="reservation">
+ 		SELECT * FROM TBL_RESERVATION WHERE PENSIONID = #{pensionid}
+ 	</select>
+ 	
+ 	<select id="checkDate" resultType="reservation">
+ 		SELECT * FROM TBL_RESERVATION
+		<![CDATA[
+		WHERE
+			((CHECKIN >= #{checkin} AND CHECKIN < #{checkout})
+			OR (CHECKOUT > #{checkin} AND CHECKOUT <= #{checkout}))
+			AND ROOMNUM = #{roomNum}
+		]]>
+ 	</select>
+ 	
+ 	<insert id="insert">
+ 		<selectKey keyProperty="reservationNum" order="BEFORE" resultType="Long">
+ 		SELECT SEQ_RESERVATION.NEXTVAL FROM DUAL
+ 		</selectKey>
+ 		INSERT INTO TBL_RESERVATION (RESERVATIONNUM, CHECKIN, CHECKOUT, ROOMNUM, USERID, PENSIONID)
+	VALUES (#{reservationNum}, #{checkin}, #{checkout}, #{roomNum}, #{userid}, #{pensionid})
+ 	</insert>
+ </mapper> 

@@ -1,0 +1,340 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!doctype html>
+<html lang="en">
+<head>
+	<jsp:include page="../common/head.jsp" />
+	
+	<title>여수어때 : 상세페이지</title>
+</head>
+<body>
+	<div class="site-mobile-menu site-navbar-target">
+		<div class="site-mobile-menu-header">
+			<div class="site-mobile-menu-close">
+				<span class="icofont-close js-menu-toggle"></span>
+			</div>
+		</div>
+		<div class="site-mobile-menu-body"></div>
+	</div>
+	
+	<jsp:include page="../common/nav.jsp" />
+	
+	<!-- 상세페이지 메인 -->
+	<div class="section">
+		 <div class="container">
+			<div class="row justify-content-between">
+				<div class="col-lg-7">
+					<div class="img-property-slide-wrap">
+						<div class="img-property-slide">
+							<img src="https://talkimg.imbc.com/TVianUpload/tvian/TViews/image/2022/01/28/O6491JUqhMXN637789968132785501.jpg" alt="Image" class="img-fluid">
+							<img src="http://img.segye.com/content/image/2021/11/16/20211116509806.jpg" alt="Image" class="img-fluid">
+							<img src="https://image.inews24.com/v1/fc335c6bbeb556.jpg" alt="Image" class="img-fluid">
+							<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFtup1tDR7MdQFsEws_Olg6HDMjdgRImLSvw&usqp=CAU" alt="Image" class="img-fluid">
+	                     	<ul class="list-group small container px-1 upload-files">
+							 </ul>
+							
+							<div class="container pt-3 px-1">
+								<div class="row thumbs">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- <div class="card shadow mb-4">
+	                    <div class="card-header py-3">
+	                        <h6 class="m-0 font-weight-bold text-primary float-left">Files</h6>
+	                    </div>
+	                    
+                    </div> -->
+				<div class="col-lg-4">
+					<h3 class="heading">${pension.name}</h3>
+					<p class="meta">${pension.address}</p>
+					<%-- <p class="text-black-50">${pension.comments}</p> --%>
+					<div class="d-block agent-box p-5">
+						<div class="img mb-4">
+							<img src="/resources/assets/property/images/person_2.jpg" alt="Image" class="img-fluid">
+						</div>
+						<div class="text">
+							<h3 class="mb-0">사장님 한마디</h3>
+							<p>${pension.comments}</p>
+							<!-- <ul class="list-unstyled social dark-hover d-flex">
+								<li class="me-1"><a href="#"><span class="icon-instagram"></span></a></li>
+								<li class="me-1"><a href="#"><span class="icon-twitter"></span></a></li>
+								<li class="me-1"><a href="#"><span class="icon-facebook"></span></a></li>
+								<li class="me-1"><a href="#"><span class="icon-linkedin"></span></a></li>
+							</ul> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<!-- 펜션 숙소 리스트 -->
+	<div class="section">
+		<!-- 펜션 숙소 1 -->
+		<div class="container">
+			<div class="row justify-content-between mb-5">
+				<div class="col-lg-7 mb-5 mb-lg-0 order-lg-2">
+					<img src="/resources/assets/property/images/hero_bg_3.jpg" alt="Image" class="img-fluid">
+				</div>
+				<div class="col-lg-4">
+					<c:forEach items="${room}" var="r">
+						<div class="blog-entry d-flex blog-entry-search-item">
+							<div>
+								<h2>${r.roomName}</h2>
+								<p>${r.price}</p>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+		</div>
+		<!-- 펜션 숙소 2 -->
+		<div class="container">
+			<div class="row justify-content-between mb-5">
+				<div class="col-lg-7 mb-5 mb-lg-0">
+					<img src="/resources/assets/property/images/hero_bg_2.jpg" alt="Image" class="img-fluid">
+				</div>
+				<div class="col-lg-4">
+					<div class="d-flex feature-h">
+						<span class="wrap-icon me-3">
+							<span class="icon-home2"></span>
+						</span>
+						<div class="feature-text">
+							<h3 class="heading">Quality properties</h3>
+							<p class="text-black-50">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum iste.</p>   
+						</div>
+					</div>
+					<div class="d-flex feature-h">
+						<span class="wrap-icon me-3">
+							<span class="icon-person"></span>
+						</span>
+						<div class="feature-text">
+							<h3 class="heading">Top rated agents</h3>
+							<p class="text-black-50">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum iste.</p>   
+						</div>
+					</div>
+					<div class="d-flex feature-h">
+						<span class="wrap-icon me-3">
+							<span class="icon-security"></span>
+						</span>
+						<div class="feature-text">
+							<h3 class="heading">Easy and safe</h3>
+							<p class="text-black-50">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum iste.</p>   
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr>
+	
+	<!-- 임시 댓글 등록 폼 -->
+	<sec:authorize access="isAuthenticated()">
+	<div class="input-group p-3 reply-register-area">
+		<textarea class="form-control" style='resize:none'></textarea>
+	 	<button type="button" class="btn btn-primary">작성</button>
+	 </div>
+	</sec:authorize>
+	<!-- <sec:authorize access="isAnonymous()">
+		<div class="text-center py-4">
+			<a href="/member/login">댓글 등록은 로그인 이후에 가능합니다.</a>
+		</div>
+	</sec:authorize> -->
+	
+	<!-- 펜션 댓글 리스트 -->
+	<div class="section">
+		<div class="container">
+			<div class="comment-wrap">
+			<h3 class="mb-4 heading">6 Comments</h3>
+				<ul class="comment-list">
+					<!-- 댓글 1 -->
+					<li class="comment border-bottom">
+						<div class="vcard">
+							<img src="/resources/assets/property/images/person_1.jpg" alt="Image placeholder">
+						</div>
+						<div class="comment-body">
+							<h3>제목</h3>
+							<div class="meta">날짜</div>
+							<p>내용내용</p>
+						</div>
+					</li>
+					<!-- 댓글 2 -->
+					<li class="comment border-bottom">
+						<div class="vcard">
+							<img src="/resources/assets/property/images/person_2.jpg" alt="Image placeholder">
+						</div>
+						<div class="comment-body">
+							<h3>댓글 2</h3>
+							<div class="meta">January 9, 2018 at 2:21pm</div>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+						</div>
+						<!-- 답글 -->
+						<ul class="children">
+							<li class="comment">
+								<div class="vcard">
+									<img src="/resources/assets/property/images/person_3.jpg" alt="Image placeholder">
+								</div>
+								<div class="comment-body">
+									<h3>답글이다</h3>
+									<div class="meta">January 9, 2018 at 2:21pm</div>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?</p>
+								</div>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				
+				<!--new try-->
+				<!-- <div class="my-3 p-3 bg-white rounded shadow-sm" style="padding-top: 10px">
+					<form:form name="form" id="form" role="form" method="post">
+					<form:hidden path="pensionid" id="pensionid"/>
+					<div class="row">
+						<div class="col-sm-10">
+							<form:textarea path="content" id="content" class="form-control" rows="3" placeholder="댓글을 입력해 주세요"></form:textarea>
+						</div>
+						<div class="col-sm-2">
+							<form:input path="nickName" class="form-control" id="nickName" placeholder="댓글 작성자"></form:input>
+							<button type="button" class="btn btn-sm btn-primary" id="btnReplySave" style="width: 100%; margin-top: 10px">저장</button>
+						</div>
+					</div>
+					</form:form>
+				</div>
+				<div class="my-3 p-3 bg-white rounded shadow-sm" style="padding-top: 10px">
+					<h6 class="border-bottom pb-2 mb-0">Reply list</h6>
+					<div id="replyList"></div>
+				</div>  -->
+				<!-- new end -->
+				
+			</div>
+		</div>
+	</div>
+	<hr>
+	<!-- 하단 펜션 이미지 -->
+	<div class="container my-5">
+		<div class="row">
+			<div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+				<img src="/resources/assets/property/images/img_1.jpg" alt="Image" class="img-fluid">
+			</div>
+			<div class="col-md-4 mt-lg-5" data-aos="fade-up" data-aos-delay="100">
+				<img src="/resources/assets/property/images/img_3.jpg" alt="Image" class="img-fluid">
+			</div>
+			<div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+				<img src="/resources/assets/property/images/img_2.jpg" alt="Image" class="img-fluid">
+			</div>
+		</div>
+	</div>
+	<jsp:include page="../common/footer.jsp" />
+	<!-- <sec:authorize access="isAuthenticated()">
+		<sec:authentication property="principal.nickName" var="replyer"/>
+	</sec:authorize> -->
+	<script>
+		//=======================================================
+		$(document).ready(function() {
+			showReplyList();
+		})
+	</script>
+	<script>
+	$(function() {	
+		var showFiles = function() {
+		$.getJSON("/room/attachs", {roomNum:roomNum})
+		.done(function(result) {
+			console.log(result);
+		function showReplyList() {
+			var url = "${pageContext.request.contextPath}/reply/getList";
+			var paramData = {"pensionid" : "${pensionid.pensionid}"};
+
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: paramData,
+				dataType: 'json',
+				success: function(result) {
+					var str = "";
+					if(result.length < 1) {
+						alert("등록된 댓글이 없습니다.");
+					}
+					else{
+						$(result).each(function() {
+							str += '<div class="media text-muted pt-3" id="rid' + this.pensionid + '">';
+							str += '<svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder:32x32">';
+							str += '<title>Placeholder</title>';
+							str += '<rect width="100%" height="100%" fill="#007bff"></rect>';
+							str += '<text x="50%" fill="#007bff" dy=".3em">32x32</text>';
+							str += '</svg>';
+							str += '<p class="media-body pb-3 mb-0 small lh-125 border-bottom horder-gray">';
+							str += '<span class="d-block">';
+							str += '<strong class="text-gray-dark">' + this.nickName + '</strong>';
+							str += '<span style="padding-left: 7px; font-size: 9pt">';
+							str += '<a href="javascript:void(0)" onclick="fn_editReply(' + this.pensionid + ', \'' + this.nickName + '\', \'' + this.nickName + '\' )" style="padding-right:5px">수정</a>';
+							str += '<a href="javascript:void(0)" onclick="fn_deleteReply(' + this.pensionid + ')" >삭제</a>';
+							str += '</span>';
+							str += '</span>';
+							str += this.content;
+							str += '</p>';
+							str += '</div>';
+						})
+					}
+					$("#replyList").html(str);
+
+				}
+			})
+		}	
+		//=======================================================
+		
+		/* 이벤트주기 */
+		// 임시 댓글 등록
+		/* $(".reply-register-area button").click(function() {
+			var replyContent = $(".reply-register-area textarea").val();
+			if(replyContent.trim().length == 0){
+				alert("댓글 내용을 작성하세요.");
+				$(".reply-register-area textarea").focus();
+				return;
+			}
+			var reply = {pensions:pensions, reply:$(".reply-register-area textarea").val(), replyer:replyer};
+			replyService.add(reply, function(result) {
+				alert("댓글 등록 성공");
+				console.log(result); // 글번호
+				$(".reply-register-area textarea").val("");
+				replyService.get(result, function(result) {
+					// alert("글 조회 성공");
+					console.log(result);
+					$(".chat").prepend(getReplyStr(result)); // 댓글목록 자식 태그 중 가장 첫번째 순서에 추가
+				})
+				console.log(result);
+			});
+		}) */
+		</script>
+		<script>
+			var str = "";
+			var thumbStr = "";
+			for(var i in result) {
+				console.log(result[i]);
+				console.log($.param(result[i]));
+				str += '<li class="list-group-item" data-uuid="' + result[i].uuid + '" data-path="' + result[i].path + '" data-image="' + result[i].image + '" data-origin="' + result[i].origin + '"><a href="/download?' + $.param(result[i]) + '">'
+						+ result[i].origin+'</a></li>';
+				if(result[i].image) {
+					var o = {...result[i]}; // clone
+					o.uuid = 's_' + o.uuid;
+					thumbStr += '<div class="col-6 col-sm-4 col-lg-3 col-xl-2" data-uuid="' + result[i].uuid + '" data-path="' + result[i].path + '" data-image="' + result[i].image + '" data-origin="' + result[i].origin + '">';
+					thumbStr += '	<figure class="d-inline-block" style="position:relative;">';
+					thumbStr += '		<figcaption></figcaption>';
+					thumbStr += '		<a href="/display?' + $.param(result[i]) + '" data-lightbox="img" data-title="' + o.origin + '"><img alt="" src="/display?' + $.param(o) + '" class="mx-1 my-2 img-thumbnail"></a>';
+					thumbStr += '	</figure>';
+					thumbStr += '</div>';
+				}
+			}
+			$(".upload-files").append(str);
+			$(".thumbs").append(thumbStr);
+		})
+	}
+	
+	showFiles();
+	});
+	</script>
+</body>
+</html>

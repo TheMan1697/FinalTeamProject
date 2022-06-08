@@ -1,0 +1,32 @@
+package works.yermi.service;
+
+import java.util.List;
+
+import works.yermi.domain.CriteriaPension;
+import works.yermi.domain.PensionVO;
+
+public interface PensionService {
+	List<PensionVO> getListWithPaging(CriteriaPension cri);
+	
+	List<PensionVO> getList();
+	
+	List<PensionVO> getListTopten();
+	
+	List<PensionVO> getListWithFilter(CriteriaPension cri, PensionVO vo);
+	
+	PensionVO get(Long pensionid);
+	
+	int register(PensionVO vo);
+	
+	int registerPublic(PensionVO vo);
+	
+	int registerInternal(PensionVO vo);
+	
+	int registerOther(PensionVO vo);
+	
+	int registerFilter(PensionVO vo);
+	
+	boolean modify(PensionVO vo);
+	
+	boolean remove(Long pensionid);
+}

@@ -1,0 +1,17 @@
+package works.yermi.domain;
+
+import org.apache.ibatis.type.Alias;
+
+import lombok.Data;
+
+@Data @Alias("reservation")
+public class ReservationVO {
+	private Long reservationNum;
+	private String checkin;
+	private String checkout;
+	private boolean reservationStatus;
+	private Long roomNum;
+	private String userid;
+	private Long pensionid;
+	
+}

@@ -1,0 +1,171 @@
+package works.yermi.controller;
+
+import java.io.File;
+import java.io.IOException;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import works.yermi.domain.Criteria;
+import works.yermi.domain.CriteriaRoom;
+import works.yermi.domain.MemberVO;
+import works.yermi.domain.PageDTO;
+import works.yermi.domain.PensionVO;
+import works.yermi.domain.RoomVO;
+import works.yermi.mapper.PensionAttachMapper;
+import works.yermi.mapper.RoomAttachMapper;
+import works.yermi.service.MemberService;
+import works.yermi.service.PensionService;
+import works.yermi.service.RoomService;
+
+@Controller
+@RequestMapping("admin/*")
+@AllArgsConstructor
+@Log4j
+public class AdminController {
+	private PensionService pensionService;
+	private MemberService memberService;
+	private RoomService roomservice;
+	private PensionAttachMapper mapper;
+	private RoomAttachMapper roomAttachMapper;
+	
+	@GetMapping("index")
+	public String index() {
+		return "/admin/index";
+	}
+	
+	// table form. 삭제 예정
+	@GetMapping("sample")
+	public String sample() {
+		return "/admin/sample";
+	}
+	//roomList
+	@GetMapping("roomList")
+	public void roomList(CriteriaRoom cri, Model model) {
+		model.addAttribute("roomList", roomservice.getList(cri, 59517L));
+	}
+	@PostMapping
+	("roomList")
+	public String roomUpdate(RoomVO vo, Model model){
+		model.addAttribute("roomList", roomservice.modify(vo));
+		return "redirect:/admin/roomList";
+	}
+	@PostMapping("remove")
+	public String remove(RoomVO vo, Model model){
+		model.addAttribute("roomList",roomservice.remove(vo.getRoomNum()));
+		return "redirect:/admin/roomList";
+	}
+	
+	//roomRegister
+	@GetMapping("roomRegister")
+	public void roomRegister(){}
+	@PostMapping("roomRegister")
+	public String roomReigster(RoomVO vo, Model model){
+		vo.setPensionid(59517L);
+		vo.setRoomNum(vo.getRoomNum());
+		log.info(vo.getRoomNum());
+		roomservice.register(vo);
+		
+		vo.getAttachs().forEach(attach -> {
+			String url="c:/pension/room/";
+			log.info(attach);
+			log.info(vo.getRoomNum());
+			
+			File folder = new File(url, vo.getPensionid().toString()+"/"+vo.getRoomNum().toString());
+			if(!folder.exists()) {
+				folder.mkdirs();
+			}
+			
+			File origin = new File(url, attach.getUuid());
+			File origin_s = new File(url, "s_" + attach.getUuid());
+			try {
+				FileCopyUtils.copy(origin, new File(folder, attach.getUuid()));
+				FileCopyUtils.copy(origin_s, new File(folder, "s_" + attach.getUuid()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			origin.delete();
+			origin_s.delete();
+			attach.setRoomNum(vo.getRoomNum());
+			attach.setPath(attach.getPath() +vo.getPensionid().toString()+"/"+ attach.getRoomNum());
+			roomAttachMapper.insert(attach);
+		});
+		log.info(vo.getRoomNum());
+		return "redirect:/admin/roomList";
+	}
+	
+	
+	@GetMapping("listpension")
+	public String listpension(Model model) {
+		model.addAttribute("pension", pensionService.getList());
+		return "/admin/listpension";
+	}
+	
+	@GetMapping("sampleregister")
+	public String sampleregister() {
+		return "/admin/sampleregister";
+	}
+	
+	@GetMapping("pensionregister")
+	public void pensionregister() {
+	}
+	
+	@PostMapping("pensionregister") 
+	public String pensionregister(PensionVO vo) {
+		pensionService.register(vo);
+		pensionService.registerPublic(vo);
+		pensionService.registerInternal(vo);
+		pensionService.registerOther(vo);
+		pensionService.registerFilter(vo);
+		
+		vo.getAttachs().forEach(attach -> {
+			String url = "c:/pension/main/";
+			log.info(attach);
+			log.info(vo.getPensionid());
+			
+			File folder = new File(url, vo.getPensionid().toString());
+			if(!folder.exists()) {
+				folder.mkdirs();
+			}
+			
+			File origin = new File(url, attach.getUuid());
+			File origin_s = new File(url, "s_" + attach.getUuid());
+			try {
+				FileCopyUtils.copy(origin, new File(folder, attach.getUuid()));
+				FileCopyUtils.copy(origin_s, new File(folder, "s_" + attach.getUuid()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			origin.delete();
+			origin_s.delete();
+			attach.setPensionid(vo.getPensionid());
+			attach.setPath(attach.getPath() + attach.getPensionid());
+			mapper.insert(attach);
+			
+		});
+		return "redirect:/admin/index";
+	}
+	
+	// table form. 삭제 예정
+	@GetMapping("memberList")
+	public void memberList(Model model, Criteria cri) {
+		model.addAttribute("members", memberService.list(cri));
+		model.addAttribute("page", new PageDTO(memberService.getTotalCount(cri), cri));
+	}
+
+	@PostMapping("memberList")
+	public String memberListModify(Model model, MemberVO memberVO) {
+		model.addAttribute("members", memberService.modify(memberVO));
+//		model.addAttribute("members", memberService.memberListModify(memberVO));
+		
+		log.info(memberVO);
+		return "redirect:/admin/memberList"; 
+	}
+}

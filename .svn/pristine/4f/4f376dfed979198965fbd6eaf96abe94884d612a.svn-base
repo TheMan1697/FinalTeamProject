@@ -1,0 +1,164 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!doctype html>
+<html lang="en">
+<head>
+	<jsp:include page="../common/head.jsp" />
+	
+	<!-- iamport.payment.js -->
+	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+	
+	<title>여수어때 : 예약페이지</title>
+</head>
+<body>
+	<div class="site-mobile-menu site-navbar-target">
+		<div class="site-mobile-menu-header">
+			<div class="site-mobile-menu-close">
+				<span class="icofont-close js-menu-toggle"></span>
+			</div>
+		</div>
+		<div class="site-mobile-menu-body"></div>
+	</div>
+	
+	<jsp:include page="../common/nav.jsp" />
+	
+	<div class="rounded py-3 bg-light">
+	    <div class="row d-flex justify-content-center pb-5">
+	        <div class="col-sm-5 col-md-5 ml-1">
+	            <div class="py-4 d-flex flex-row">
+	                <h5><span class="fa fa-check-square-o"></span><b>ELIGIBLE</b> | </h5><span class="pl-2">Pay</span>
+	            </div>
+	            <h4 class="green">$85.00</h4>
+	            <h4>Diabetes Pump & Supplies</h4>
+	            <div class="d-flex pt-2">
+	                <div><p><b>Insurance Responsibility.</b><span class="green">$71.76</span></p></div>
+	                <div class="ml-auto"><p class="text-primary"><i class="fa fa-plus-circle text-primary"></i>Add insurance card</p></div>
+	            </div>
+	            <p>Insurance claims and all necessary dependencies will be submitted to your insurer for the coverred portion of this order</p>
+	            <div class="rounded bg-light d-flex">
+	                <div class="p-2">Aetna-Open Access</div>
+	                <div class="ml-auto p-2">OAP</div>
+	            </div>
+	            <hr>
+	            <div class="pt-2">
+	                <div class="d-flex">
+	                    <div><p><b>Patient Balance.</b><span class="green">$13.24</span></p></div>
+	                    <div class="ml-auto p-2"><p class="text-primary"><i class="fa fa-plus-circle text-primary"></i>Add payment card</p></div>
+	                </div>
+	                <p>
+	                    This is an estimate for the portion of your order (not covered by insurance) due 
+	                    today . once insurance finalizes their review refunds and/or balances will reconcile automatically.
+	                </p>
+	                <form class="pb-3">
+	                    <div class="d-flex flex-row align-content-center">
+	                        <div class="pt-2 pr-2"><input type="radio" name="radio1" id="r1" checked></div>
+	                        <div class="rounded border d-flex w-100 px-2">
+	                            <div class="pt-2"><p><i class="fa fa-cc-visa text-primary pr-2"></i>Visa Debit Card</p></div>
+	                            <div class="ml-auto pt-2">************3456</div>
+	                        </div>
+	                    </div>
+	                </form>
+	                <form class="pb-3">
+	                    <div class="d-flex flex-row w-100">
+	                        <div class="pt-2 pr-2"><input type="radio" name="radio2" id="r2"></div>
+	                        <div class="rounded  d-flex w-100 px-2">
+	                            <div class="pt-2"><p><i class="fa fa-cc-mastercard pr-2"></i>Mastercard Office</p></div>
+	                            <div class="ml-auto pt-2">************1038</div>
+	                        </div>
+	                    </div>
+	                </form>
+	                <div>
+	                    <input type="button" value="Proceed to payment" class="btn btn-primary btn-block" onclick="iamport()">
+	                </div>
+	            </div>
+	        </div>
+	        <div class="col-sm-3 col-md-4 offset-md-1 mobile">
+	            <div class="py-4 d-flex justify-content-end">
+	                <h6><a href="#">Cancel and return to website</a></h6>
+	            </div>
+	            <div class="bg-white rounded d-flex flex-column">
+	                <div class="p-2 ml-3"><h4>Order Recap</h4></div>
+	                <div class="p-2 d-flex">
+	                    <div class="col-8">Contracted Price</div>
+	                    <div class="ml-auto">$186.76</div>
+	                </div>
+	                <div class="p-2 d-flex">
+	                    <div class="col-8">Amount toward deductible</div>
+	                    <div class="ml-auto">$0.00</div>
+	                </div>
+	                <div class="p-2 d-flex">
+	                    <div class="col-8">Coinsurance( 0% )</div>
+	                    <div class="ml-auto">+ $0.00</div>
+	                </div>
+	                <div class="p-2 d-flex">
+	                    <div class="col-8">Copayment</div>
+	                    <div class="ml-auto">+ $40.00</div>
+	                </div>
+	                <div class="border-top px-4 mx-3">
+	                </div>
+	                <div class="p-2 d-flex pt-3">
+	                    <div class="col-8">Total Deductible, Coinsurance, and Copay</div>
+	                    <div class="ml-auto">$40.00</div>
+	                </div>
+	                <div class="p-2 d-flex">
+	                    <div class="col-8">Maximum out-of-pocket on Insurance Policy (not reached)</div>
+	                    <div class="ml-auto">$6500.00</div>
+	                </div>
+	                <div class="border-top px-4 mx-3"></div>
+	                <div class="p-2 d-flex pt-3">
+	                    <div class="col-8">Insurance Responsibility</div>
+	                    <div class="ml-auto"><b>$71.76</b></div>
+	                </div>
+	                <div class="p-2 d-flex">
+	                    <div class="col-8">Patient Balance  <span class="fa fa-question-circle text-secondary"></span></div>
+	                    <div class="ml-auto"><b>$71.76</b></div>
+	                </div>
+	                <div class="border-top px-4 mx-3"></div>
+	                <div class="p-2 d-flex pt-3">
+	                    <div class="col-8"><b>Total</b></div>
+	                    <div class="ml-auto"><b class="green">$85.00</b></div>
+	                </div>
+	            </div>
+	        </div>        
+	    </div>
+	</div>
+	
+	<jsp:include page="../common/footer.jsp" />
+	
+	<script>
+		function iamport(){
+			//가맹점 식별코드
+			IMP.init('imp20015195');
+			IMP.request_pay({
+			    pg : 'html5_inicis',
+			    pay_method : 'card',
+			    merchant_uid : 'merchant_' + new Date().getTime(),
+			    name : '상품1' , //결제창에서 보여질 이름
+			    amount : 100, //실제 결제되는 가격
+			    buyer_email : 'iamport@siot.do',
+			    buyer_name : '구매자이름',
+			    buyer_tel : '010-1234-5678',
+			    buyer_addr : '서울 강남구 도곡동',
+			    buyer_postcode : '123-456'
+			}, function(rsp) {
+				console.log(rsp);
+				// 결제검증
+				$.ajax({
+		        	type : "POST",
+		        	url : "/verifyIamport/" + rsp.imp_uid 
+		        }).done(function(data) {
+		        	
+		        	console.log(data);
+		        	
+		        	// 위의 rsp.paid_amount 와 data.response.amount를 비교한후 로직 실행 (import 서버검증)
+		        	if(rsp.paid_amount == data.response.amount){
+			        	alert("결제 및 결제검증완료");
+		        	} else {
+		        		alert("결제 실패");
+		        	}
+		        });
+			});
+		}
+	</script>
+	
+</body>
+</html>

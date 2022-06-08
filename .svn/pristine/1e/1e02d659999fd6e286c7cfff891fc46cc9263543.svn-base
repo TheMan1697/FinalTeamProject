@@ -1,0 +1,17 @@
+package works.yermi.mapper;
+
+import java.util.List;
+
+import works.yermi.domain.PensionAttachVO;
+
+public interface PensionAttachMapper {
+	void insert(PensionAttachVO vo);
+	
+	void delete(String uuid);
+	
+	void deleteAll(Long pensionid);
+	
+	List<PensionAttachVO> findBy(Long pension);
+	
+	List<PensionAttachVO> getoldFiles();
+}

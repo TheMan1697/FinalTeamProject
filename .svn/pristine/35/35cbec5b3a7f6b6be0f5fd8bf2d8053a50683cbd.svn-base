@@ -1,0 +1,44 @@
+package works.yermi.service;
+
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+import works.yermi.domain.AuthVO;
+import works.yermi.domain.Criteria;
+import works.yermi.domain.CriteriaPension;
+import works.yermi.domain.CriteriaRoom;
+import works.yermi.domain.MemberVO;
+
+public interface MemberService { 
+	
+	// 회원가입
+	void join(MemberVO vo);
+
+	// 회원 단일 조회
+	MemberVO get(String userId);
+	
+	// 회원정보수정
+	boolean modify(MemberVO memberVO);
+	
+	// 회원정보수정
+	boolean memberListModify(MemberVO memberVO);
+
+	// 회원탈퇴
+	boolean remove(String userId);
+	
+	// 회원 존재여부 확인
+	MemberVO hasMember(MemberVO memberVO); 
+	
+	// 이메일 인증
+	void mailSender(String email, String userId) throws UnsupportedEncodingException, IllegalArgumentException;
+	
+	// 이메일 인증 확인
+	boolean mailConfirm(String userId, String authToken);
+	
+	// 회원 목록 조회
+	List<MemberVO> list(Criteria cri);
+	
+	// 회원 목록 총갯수
+	int getTotalCount(Criteria cri);
+	
+}
