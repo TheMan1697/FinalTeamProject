@@ -33,7 +33,7 @@
 			<div id="map" style="width:100%;height:700px;margin:0 auto; overflow:hidden; border:1px solid;"></div>
 			
 			
-   			<div id="side_wrap" style="position:absolute;top:0;left:0;bottom:0;width:400px;height:698px;margin:101px 0 30px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255);z-index: 1;font-size:12px;border-radius: 10px;">
+   			<div id="side_wrap" style="position:absolute;top:0;left:0;bottom:0;width:650px;height:698px;margin:101px 0 30px;padding:5px;overflow-y:auto;background:rgba(255, 255, 255);z-index: 1;font-size:12px;border-radius: 10px;">
    			<!-- 상세페이지 메인 -->
 				<div class="col-lg-13">
 					<ul class="bxslider">
@@ -45,6 +45,7 @@
 				<div class="col-lg-12">
 					<h3 class="heading">${pension.name}</h3>
 					<p class="meta">${pension.address}</p>
+					<a href="/pension/detail?pensionid=${pension.pensionid}" class="btn btn-primary btn-register btn-block">상세페이지로 가기</a></div>
 					<div class="d-block agent-box p-5">
 						<div class="text">
 							<h3 class="my-2 font-weight-bold">사장님 한마디</h3>
@@ -176,7 +177,7 @@
       </div>
    </div>
    </div>
-   			<button id="side_button_left" style="background-color:white; border:none; position:absolute; margin:-370px 0 0 400px;z-index:1;"><img src="https://maps.gstatic.com/tactile/pane/arrow_left_2x.png" style="width:42px;margin:0 auto;"></button>
+   			<button id="side_button_left" style="background-color:white; border:none; position:absolute; margin:-370px 0 0 650px;z-index:1;"><img src="https://maps.gstatic.com/tactile/pane/arrow_left_2x.png" style="width:42px;margin:0 auto;"></button>
    			  <button id="side_button_right" style="background-color:white; border:none; position:absolute; margin:-370px 0 0 0px;z-index:1; display:none"><img src="https://maps.gstatic.com/tactile/pane/arrow_left_2x.png" style="width:42px;margin:0 auto; transform:rotate(-180deg);"></button>
 		</div>         
 		
@@ -209,7 +210,7 @@
 		mapService.getList(function(result) {
 			for(var a in result) {
 				var marker = positions.push({
-					content:'<div style="font-weight:bold;"><img src="/display?path='+result[a].attachs[0].path + '&uuid='+result[a].attachs[0].uuid+'" width="300px" height="100px" style="overflow:hidden; margin-bottom:8px;"><br>'+result[a].name+ ' / 별점 : '+result[a].starRate/2+'<br><div style="text-align:center; margin-top:13px;"><a href="/map/place/'+result[a].pensionid+'/'+result[a].name+'" class="btn btn-warning btn-register btn-block" id="pushState">지도에서 보기</a></div>'
+					content:'<div style="font-weight:bold;"><img src="/display?path='+result[a].attachs[0].path + '&uuid='+result[a].attachs[0].uuid+'" width="300px" height="100px" style="overflow:hidden; margin-bottom:8px;"><br>'+result[a].name+ ' / 별점 : '+result[a].starRate/2+'<br><div style="text-align:center; margin-top:13px;"><a href="/map/place/'+result[a].pensionid+'/'+result[a].name+'" class="btn btn-info btn-register btn-block" id="pushState">지도에서 보기</a></div>'
 					+'<div style="text-align:center; margin-top:1px;"><a href="/pension/detail?pensionid='+result[a].pensionid+'" class="btn btn-primary btn-register btn-block">상세페이지로 가기</a></div></div>'
 					,latlng: new kakao.maps.LatLng(result[a].latitude, result[a].longitude)});
 				
