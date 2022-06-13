@@ -209,8 +209,9 @@
 		mapService.getList(function(result) {
 			for(var a in result) {
 				var marker = positions.push({
-					content:'<div style="font-weight:bold;"><img src="/display?path='+result[a].attachs[0].path + '&uuid='+result[a].attachs[0].uuid+'" width="230px" height="100px" style="overflow:hidden;"><br>'+result[a].name+'<br><div class="text-right">'+result[a].starRate/2+'&nbsp;<div class="text-warning float-right" id="paintStar"><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i></div></div><div style="text-align:center;"><a href="/map/place/'+result[a].pensionid+'/'+result[a].name+'"><img src="https://maps.gstatic.com/tactile/pane/arrow_left_2x.png" id="pushState" style="width:42px;margin:0 auto;transform:rotate(-90deg);"></a></div></div>'
-							,latlng: new kakao.maps.LatLng(result[a].latitude, result[a].longitude)});
+					content:'<div style="font-weight:bold;"><img src="/display?path='+result[a].attachs[0].path + '&uuid='+result[a].attachs[0].uuid+'" width="300px" height="100px" style="overflow:hidden; margin-bottom:8px;"><br>'+result[a].name+ ' / 별점 : '+result[a].starRate/2+'<br><div style="text-align:center; margin-top:13px;"><a href="/map/place/'+result[a].pensionid+'/'+result[a].name+'" class="btn btn-warning btn-register btn-block" id="pushState">지도에서 보기</a></div>'
+					+'<div style="text-align:center; margin-top:1px;"><a href="/pension/detail?pensionid='+result[a].pensionid+'" class="btn btn-primary btn-register btn-block">상세페이지로 가기</a></div></div>'
+					,latlng: new kakao.maps.LatLng(result[a].latitude, result[a].longitude)});
 				
 			}
 			 $(function(){
@@ -309,7 +310,7 @@
 	$(document).ready(function(){
 		$(document).on('click', '#pushState',function(event){
 			history.pushState(null, null,  $("#pushState").attr("href"));
-			event.preventDefault();
+			/* event.preventDefault(); */
 			$('#side_wrap').animate({width:'show'},600);
 			$('#side_button_left').animate({width:'show'},950);
 			$('article').load($("#pushState").attr("href")+'article>.place')
